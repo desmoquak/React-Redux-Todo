@@ -1,4 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+//Thunk is a function that returns another function
+export const getTodosAsync = createAsyncThunk(
+	'todos/getTodosAsync',
+	async () => {
+		const response = await fetch('https://localhost:7000/todos');
+		if (response.ok) {
+			const todos = await response.json();
+			return { todos };
+		}
+	}
+);
 
 const todoSlice = createSlice({
 	//control todo state
@@ -27,8 +38,17 @@ const todoSlice = createSlice({
 			);
 			state[index].completed = action.payload.completed;
 		},
+		deleteTodo: (state, action) => {
+			return state.filter((todo) => todo.id !== action.payload.id);
+		},
+	},
+	// Add reducers for additional action types here, and handle loading state as needed
+	extraReducers: {
+		[getTodosAsync.fulfilled]: (state, action) => {
+			return action.payload.todos;
+		},
 	},
 });
-export const { addTodo, toggleComplete } = todoSlice.actions; //created our  actions (todo, toggleComplete)
+export const { addTodo, toggleComplete, deleteTodo } = todoSlice.actions; //created our  actions (todo, toggleComplete)
 
 export default todoSlice.reducer;
