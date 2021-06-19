@@ -4,17 +4,18 @@ import { addTodo } from '../redux/todoSlice'; //Import the action we want to dis
 
 const AddTodoForm = () => {
 	const [value, setValue] = useState('');
-
 	const dispatch = useDispatch(); // dispatch action
 
 	const onSubmit = (event) => {
 		event.preventDefault();
-		dispatch(
-			//dispatch payload
-			addTodo({
-				title: value,
-			})
-		);
+		if (value) {
+			dispatch(
+				//dispatch payload
+				addTodo({
+					title: value,
+				})
+			);
+		}
 	};
 
 	return (
@@ -27,7 +28,7 @@ const AddTodoForm = () => {
 				value={value}
 				onChange={(event) => setValue(event.target.value)}></input>
 
-			<button type='submit' className='btn btn-primary mb-2'>
+			<button type='submit' className='btn btn-warning mb-2'>
 				Submit
 			</button>
 		</form>

@@ -1,22 +1,22 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { toggleComplete, deleteTodo } from '../redux/todoSlice';
+import { toggleCompleteAsync, deleteTodoAsync } from '../redux/todoSlice';
 
 const TodoItem = ({ id, title, completed }) => {
 	const dispatch = useDispatch();
 
-	const handleCompleteClick = () => {
-		dispatch(toggleComplete({ id: id, completed: !completed }));
+	const handleCheckboxClick = () => {
+		dispatch(toggleCompleteAsync({ id, completed: !completed }));
 	};
 
 	const handleDeleteClick = () => {
-		dispatch(deleteTodo({ id: id })); //dispatch action
+		dispatch(deleteTodoAsync({ id }));
 	};
 
 	return (
 		<li
 			className={`list-group-item ${
-				completed && 'list-group-item-success'
+				completed && 'list-group-item-secondary'
 			}`}>
 			<div className='d-flex justify-content-between'>
 				<span className='d-flex align-items-center'>
@@ -24,8 +24,7 @@ const TodoItem = ({ id, title, completed }) => {
 						type='checkbox'
 						className='mr-3'
 						checked={completed}
-						onChange={handleCompleteClick}></input>
-
+						onClick={handleCheckboxClick}></input>
 					{title}
 				</span>
 				<button onClick={handleDeleteClick} className='btn btn-warning'>
